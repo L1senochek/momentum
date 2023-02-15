@@ -6,6 +6,12 @@ const time = document.querySelector('.time');
 const date = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
 const name = document.querySelector('.name');
+const body = document.querySelector('body');
+const slideNext = document.querySelector('.slide-next');
+const slidePrev = document.querySelector('.slide-prev');
+
+
+let randomNum;
 
 // const date = new Date();
 // console.log(date);
@@ -66,6 +72,40 @@ function getLocalStorage() {
 }
 window.addEventListener('load', getLocalStorage);
 
+// 3. Image Slider
 
+function getRandomNum() {
+  let min = Math.ceil(1);
+  let max = Math.floor(20);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+randomNum = getRandomNum();
+
+
+function setBg() {
+  const img = new Image();
+  let timeOfDay = getTimeOfDay();
+  let bgNum = ('' + randomNum).padStart(2, "0");
+  body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
+  img.src = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg';// здесь ваш код 
+  img.onload = () => {
+    body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";// здесь тоже ваш код
+  };
+
+
+
+}
+
+setBg();
+function getSlideNext() {
+  return randomNum += 1;
+}
+
+function getSlidePrev() {
+  return randomNum -= 1;
+}
+console.log(randomNum, getSlidePrev());
+slideNext.addEventListener('click', getSlideNext);
+slidePrev.addEventListener('click', getSlidePrev);
 
 
