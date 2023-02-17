@@ -9,8 +9,10 @@ const name = document.querySelector('.name');
 const body = document.querySelector('body');
 const slideNext = document.querySelector('.slide-next');
 const slidePrev = document.querySelector('.slide-prev');
-
-
+const weatherIcon = document.querySelector('.weather-icon');
+const temperature = document.querySelector('.temperature');
+const weatherDescription = document.querySelector('.weather-description');
+const city = document.querySelector('.city');
 let randomNum;
 
 // const date = new Date();
@@ -86,14 +88,11 @@ function setBg() {
   const img = new Image();
   let timeOfDay = getTimeOfDay();
   let bgNum = ('' + randomNum).padStart(2, "0");
-  body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
+  // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
   img.src = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg';// здесь ваш код 
   img.onload = () => {
     body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";// здесь тоже ваш код
   };
-
-
-
 }
 
 setBg();
@@ -104,8 +103,39 @@ function getSlideNext() {
 function getSlidePrev() {
   return randomNum -= 1;
 }
-console.log(randomNum, getSlidePrev());
+// console.log(randomNum, getSlidePrev());
 slideNext.addEventListener('click', getSlideNext);
 slidePrev.addEventListener('click', getSlidePrev);
+
+// 4. Weather Widget
+
+// https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric
+
+async function getWeather() {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
+  const res = await fetch(url);
+  const data = await res.json();
+  // console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+  weatherIcon.className = 'weather-icon owf';
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+  temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
+  // temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
+  weatherDescription.textContent = data.weather[0].description;
+}
+
+function setCity(event) {
+  if (event.code === 'Enter') {
+    weatherIcon.className = 'weather-icon owf';
+    getWeather();
+    city.blur();
+  }
+}
+
+console.log(getWeather());
+
+document.addEventListener('DOMContentLoaded', getWeather);
+city.addEventListener('keypress', setCity);
+
+
 
 
