@@ -17,8 +17,8 @@ const city = document.querySelector('.city');
 //
 const audio = new Audio();
 const play = document.querySelector('.play');
-const playPrev = document.querySelector('.play-prev');
-const playNext = document.querySelector('.play-next');
+const playPrevSound = document.querySelector('.play-prev');
+const playNextSound = document.querySelector('.play-next');
 const pause = document.querySelector('.pause');
 
 
@@ -149,7 +149,6 @@ city.addEventListener('keypress', setCity);
 // 5. Widget "Quote of the day"
 
 function getQuotes() {
-  // const quotes = 'js/data.json';
   // const quotes = 'https://l1senochek.github.io/momentum/js/data.json';
   const quotes = 'js/data.json';
   fetch(quotes).then(res => res.json()).then(data => {
@@ -168,8 +167,8 @@ function playAudio() {
   // audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
 
   if (!isPlay) {
-    audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
-
+    // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
+    audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
     audio.currentTime = 0;
     audio.play();
     isPlay = true;
@@ -216,6 +215,10 @@ function playPrev() {
   playNum--;
   playAudio();
 }
+
+playPrevSound.addEventListener('click', playPrev);
+playNextSound.addEventListener('click', playNext);
+
 // 5.2 playlist
 
 
