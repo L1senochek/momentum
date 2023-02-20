@@ -4,6 +4,7 @@
 
 const time = document.querySelector('.time');
 const date = document.querySelector('.date');
+//
 const greeting = document.querySelector('.greeting');
 const name = document.querySelector('.name');
 const body = document.querySelector('body');
@@ -13,7 +14,19 @@ const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
 const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
+//
+const audio = new Audio();
+const play = document.querySelector('.play');
+const playPrev = document.querySelector('.play-prev');
+const playNext = document.querySelector('.play-next');
+const pause = document.querySelector('.pause');
+
+
+
+
 let randomNum;
+let isPlay = false;
+let playNum = 0;
 
 // const date = new Date();
 // console.log(date);
@@ -89,9 +102,9 @@ function setBg() {
   let timeOfDay = getTimeOfDay();
   let bgNum = ('' + randomNum).padStart(2, "0");
   // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
-  img.src = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg';// здесь ваш код 
+  img.src = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg';
   img.onload = () => {
-    body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";// здесь тоже ваш код
+    body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
   };
 }
 
@@ -103,7 +116,6 @@ function getSlideNext() {
 function getSlidePrev() {
   return randomNum -= 1;
 }
-// console.log(randomNum, getSlidePrev());
 slideNext.addEventListener('click', getSlideNext);
 slidePrev.addEventListener('click', getSlidePrev);
 
@@ -112,14 +124,12 @@ slidePrev.addEventListener('click', getSlidePrev);
 // https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric
 
 async function getWeather() {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
-  // console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
   weatherIcon.className = 'weather-icon owf';
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
   temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
-  // temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
   weatherDescription.textContent = data.weather[0].description;
 }
 
@@ -136,6 +146,80 @@ console.log(getWeather());
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
 
+// 5. Widget "Quote of the day"
+
+function getQuotes() {
+  // const quotes = 'js/data.json';
+  // const quotes = 'https://l1senochek.github.io/momentum/js/data.json';
+  const quotes = 'js/data.json';
+  fetch(quotes).then(res => res.json()).then(data => {
+    console.log('data', data);
+
+
+  });
+}
+getQuotes();
+
+
+// 5. Audio player
+
+function playAudio() {
+  // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
+  // audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
+
+  if (!isPlay) {
+    audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
+
+    audio.currentTime = 0;
+    audio.play();
+    isPlay = true;
+    console.log(isPlay);
+  } else if (isPlay && isPlay === true) {
+    isPlay = false;
+    audio.pause();
+    console.log(isPlay);
+
+  }
+}
+
+play.addEventListener('click', playAudio);
+
+function toggleBtn() {
+  play.classList.toggle('pause');
+}
 
 
 
+function removeBtn() {
+  play.classList.remove('pause');
+}
+
+
+
+function switchingPause() {
+  if (!isPlay) {
+    play.addEventListener('click', toggleBtn);
+  } else {
+    pause.addEventListener('click', removeBtn);
+  }
+}
+switchingPause();
+
+// 5.1 switching track
+
+function playNext() {
+  playNum++;
+  playAudio();
+}
+
+function playPrev() {
+  playNum--;
+  playAudio();
+}
+// 5.2 playlist
+
+
+import playList from './playList.js';
+console.log(playList);
+
+audio.src = playList[playNum].src;

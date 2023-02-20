@@ -32,12 +32,24 @@ body {
   padding: 20px;
 }
 
+.audio-track {
+  width: 176px;
+  height: 3px;
+  background-color: #dddddd;
+}
+
+.audio-time {
+  width: 0;
+  height: 3px;
+  background-color: #474747;
+}
+
 .player-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 120px;
-  margin-bottom: 28px;
+  margin: 28px;
 }
 
 .play-list {
