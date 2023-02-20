@@ -226,3 +226,9 @@ import playList from './playList.js';
 console.log(playList);
 
 audio.src = playList[playNum].src;
+
+// function createPlaylist() {
+//   const li = document.createElement('li');
+//   li.classList.add('play-item');
+//   li.textContent();
+// }
