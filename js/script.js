@@ -20,6 +20,11 @@ const play = document.querySelector('.play');
 const playPrevSound = document.querySelector('.play-prev');
 const playNextSound = document.querySelector('.play-next');
 const pause = document.querySelector('.pause');
+const playListPlayer = document.querySelector('.play-list');
+//
+//ширина элемента
+const widthAudioTrack = document.querySelector('.audio-track').offsetWidth;
+
 
 
 
@@ -160,7 +165,7 @@ function getQuotes() {
 getQuotes();
 
 
-// 5. Audio player
+// 6. Audio player
 
 function playAudio() {
   // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
@@ -168,18 +173,26 @@ function playAudio() {
 
   if (!isPlay) {
     // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
-    audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
-    audio.currentTime = 0;
+    // audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
+
+    // audio.src = '../assets/sounds/Jin Hashimoto - Stand Proud.mp3';
+    audio.src = playList[playNum].src
+    // audio.currentTime = 0;
+    switchingPause();
     audio.play();
     isPlay = true;
     console.log(isPlay);
-  } else if (isPlay && isPlay === true) {
+
+  } else {
     isPlay = false;
     audio.pause();
     console.log(isPlay);
 
   }
 }
+audio.addEventListener('ended', function () {
+  playNext()
+});
 
 play.addEventListener('click', playAudio);
 
@@ -207,13 +220,46 @@ switchingPause();
 // 5.1 switching track
 
 function playNext() {
+
   playNum++;
-  playAudio();
+  if (playNum > 3) {
+    playNum = 0;
+  };
+
+  audio.src = playList[playNum].src;
+  console.log('src', audio.src);
+
+  console.log('playNum', playNum);
+  isPlay = false;
+
+  switchingPause(); // ??????
+  if (isPlay) {
+
+
+  } else {
+    playAudio();
+
+  }
+
+  //.item-active
+
 }
 
 function playPrev() {
   playNum--;
+  if (playNum < 0) {
+    playNum = 3;
+  };
+  audio.src = playList[playNum].src;
+  isPlay = false;
   playAudio();
+  // console.log('playNum', playNum);
+
+}
+
+// switching sound
+function switchingSound() {
+
 }
 
 playPrevSound.addEventListener('click', playPrev);
@@ -221,14 +267,44 @@ playNextSound.addEventListener('click', playNext);
 
 // 5.2 playlist
 
-
 import playList from './playList.js';
-console.log(playList);
 
 audio.src = playList[playNum].src;
+console.log('playList', playList, audio.src);
 
-// function createPlaylist() {
-//   const li = document.createElement('li');
-//   li.classList.add('play-item');
-//   li.textContent();
-// }
+function createPlaylist() {
+
+  playList.forEach(el => {
+    const li = document.createElement('li');
+    li.classList.add('play-item');
+    let elementTitle = el.title;
+
+
+    console.log('li', li);
+
+
+
+    playListPlayer.appendChild(li);
+    li.textContent = elementTitle;
+  });
+}
+
+createPlaylist();
+
+//ширина элемента
+//document.querySelector('.myDiv').offsetWidth
+
+function progressBarSound() {
+  // widthAudioTrack = 
+}
+console.log('duration', playNum, playList[playNum].duration)
+//convert
+function formatTime(seconds) {
+  let min = Math.floor((seconds / 60));
+  let sec = Math.floor(seconds - (min * 60));
+  if (sec < 10) {
+    sec = `0${sec}`;
+  };
+  return `${min}:${sec}`;
+};
+
