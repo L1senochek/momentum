@@ -200,7 +200,9 @@ function toggleBtn() {
   play.classList.toggle('pause');
 }
 
-
+function addBtn() {
+  play.classList.add('pause');
+}
 
 function removeBtn() {
   play.classList.remove('pause');
@@ -208,14 +210,7 @@ function removeBtn() {
 
 
 
-function switchingPause() {
-  if (!isPlay) {
-    play.addEventListener('click', toggleBtn);
-  } else {
-    pause.addEventListener('click', removeBtn);
-  }
-}
-switchingPause();
+
 
 // 5.1 switching track
 
@@ -230,9 +225,10 @@ function playNext() {
   console.log('src', audio.src);
 
   console.log('playNum', playNum);
-  isPlay = false;
 
+  isPlay = false;
   switchingPause(); // ??????
+
   if (isPlay) {
 
 
@@ -251,7 +247,10 @@ function playPrev() {
     playNum = 3;
   };
   audio.src = playList[playNum].src;
+
   isPlay = false;
+  switchingPause(); // ??????
+
   playAudio();
   // console.log('playNum', playNum);
 
@@ -264,6 +263,17 @@ function switchingSound() {
 
 playPrevSound.addEventListener('click', playPrev);
 playNextSound.addEventListener('click', playNext);
+
+function switchingPause() {
+  if (!isPlay) {
+    play.addEventListener('click', toggleBtn);
+    playPrevSound.addEventListener('click', addBtn);
+    playNextSound.addEventListener('click', addBtn);
+  } else {
+    pause.addEventListener('click', removeBtn);
+  }
+}
+switchingPause();
 
 // 5.2 playlist
 
@@ -296,7 +306,13 @@ createPlaylist();
 
 function progressBarSound() {
   // widthAudioTrack = 
+  console.log('widthAudioTrack', widthAudioTrack);
+  console.log('.duration', audio.duration, playNum);
+  console.log('.currentTime', audio.currentTime);
+
+
 }
+progressBarSound();
 console.log('duration', playNum, playList[playNum].duration)
 //convert
 function formatTime(seconds) {

@@ -32,6 +32,12 @@ body {
   padding: 20px;
 }
 
+.wrapper-audio {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
 .audio-track {
   width: 176px;
   height: 3px;
@@ -42,6 +48,20 @@ body {
   width: 0;
   height: 3px;
   background-color: #474747;
+}
+
+.track-time {
+  color: white;
+  padding-left: 10px;
+}
+
+.duration-time {
+  color: white;
+}
+
+.volume-track {
+  color: white;
+  padding-left: 10px;
 }
 
 .player-controls {
