@@ -1,5 +1,6 @@
 "use strict"
 
+///////////////////////////////////////////////
 // 1. Clock and calendar
 
 const time = document.querySelector('.time');
@@ -21,20 +22,18 @@ const playPrevSound = document.querySelector('.play-prev');
 const playNextSound = document.querySelector('.play-next');
 const pause = document.querySelector('.pause');
 const playListPlayer = document.querySelector('.play-list');
-//
-//ширина элемента
-const widthAudioTrack = document.querySelector('.audio-track').offsetWidth;
-
-
-
-
+const trackTime = document.querySelector('.track-time');
+const durationTime = document.querySelector('.duration-time');
+const audioTrack = document.querySelector('.audio-track');
+const changeQuote = document.querySelector('.change-quote');
+const quote = document.querySelector('.quote');
+const author = document.querySelector('.author');
+// const widthAudioTrack = document.querySelector('.audio-track').offsetWidth;
 
 let randomNum;
 let isPlay = false;
 let playNum = 0;
-
-// const date = new Date();
-// console.log(date);
+let updateTime;
 
 // time and date
 function showTime() {
@@ -55,6 +54,7 @@ function showDate() {
   date.textContent = currentDate;
 }
 
+///////////////////////////////////////////////
 // 2. Greeting
 
 function getTimeOfDay() {
@@ -92,6 +92,7 @@ function getLocalStorage() {
 }
 window.addEventListener('load', getLocalStorage);
 
+///////////////////////////////////////////////
 // 3. Image Slider
 
 function getRandomNum() {
@@ -101,35 +102,57 @@ function getRandomNum() {
 }
 randomNum = getRandomNum();
 
-
 function setBg() {
   const img = new Image();
   let timeOfDay = getTimeOfDay();
   let bgNum = ('' + randomNum).padStart(2, "0");
-  // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
-  img.src = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg';
+  img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`;
   img.onload = () => {
-    body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/evening/18.jpg')";
+    body.style.backgroundImage = `url(${img.src})`;
   };
 }
 
 setBg();
 function getSlideNext() {
-  return randomNum += 1;
+  if (randomNum >= 20) {
+    randomNum = 1;
+  } else {
+    randomNum++;
+  }
+  setBg();
 }
 
 function getSlidePrev() {
-  return randomNum -= 1;
+  if (randomNum <= 1) {
+    randomNum = 20;
+  } else {
+    randomNum--;
+  }
+  setBg();
 }
 slideNext.addEventListener('click', getSlideNext);
 slidePrev.addEventListener('click', getSlidePrev);
 
+///////////////////////////////////////////////
 // 4. Weather Widget
 
-// https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric
+function localStoreCity () {
+  localStorage.setItem('city', city.value);
+}
+window.addEventListener('beforeunload', localStoreCity);
+
+function localRestoreCity() {
+  if(localStorage.getItem('city')) {
+    city.value = localStorage.getItem('city');
+  } else {
+    city.value = 'Moscow';
+  }
+}
+window.addEventListener('load', localRestoreCity);
 
 async function getWeather() {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
+  localRestoreCity();
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
   weatherIcon.className = 'weather-icon owf';
@@ -140,65 +163,96 @@ async function getWeather() {
 
 function setCity(event) {
   if (event.code === 'Enter') {
+    localStoreCity();
     weatherIcon.className = 'weather-icon owf';
     getWeather();
     city.blur();
   }
 }
 
-console.log(getWeather());
-
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
 
+///////////////////////////////////////////////
 // 5. Widget "Quote of the day"
 
 function getQuotes() {
-  // const quotes = 'https://l1senochek.github.io/momentum/js/data.json';
-  const quotes = 'js/data.json';
+  const quotes = 'js/data.json'; // const quotes = 'https://l1senochek.github.io/momentum/js/data.json';
   fetch(quotes).then(res => res.json()).then(data => {
-    console.log('data', data);
-
-
+    randomNumber();
+    let random = randomNumberQuotes;
+    quote.textContent = data[random].text;
+    author.textContent = data[random].author;
   });
 }
 getQuotes();
 
+let randomNumberQuotes = Math.floor(Math.random() * 6);
+let previousNumber = 187;
 
-// 6. Audio player
-
-function playAudio() {
-  // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
-  // audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
-
-  if (!isPlay) {
-    // audio.src = '../assets/sounds/Metal Hellsinger - No Tomorrow ft Serj Tankian from System of a Down.mp3';
-    // audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
-
-    // audio.src = '../assets/sounds/Jin Hashimoto - Stand Proud.mp3';
-    audio.src = playList[playNum].src
-    // audio.currentTime = 0;
-    switchingPause();
-    audio.play();
-    isPlay = true;
-    console.log(isPlay);
-
-  } else {
-    isPlay = false;
-    audio.pause();
-    console.log(isPlay);
-
+function randomNumber() {
+  for (let i = 0; i < 1; i++) {
+    if (randomNumberQuotes === previousNumber) {
+      randomNumberQuotes = Math.floor(Math.random() * 6);
+      i = -1;
+    } else {
+      previousNumber = randomNumberQuotes;
+    }
   }
 }
+
+let curentDeg = 0;
+
+function rotate() {
+  changeQuote.style.transition = '1s';
+  curentDeg += 180;
+  changeQuote.style.rotate = `${curentDeg}deg`;
+}
+changeQuote.addEventListener('click', getQuotes);
+changeQuote.addEventListener('click', rotate);
+
+///////////////////////////////////////////////
+// 6. Audio player
+
+let previousSongPlay;
+
+function playAudio() {
+  if (!isPlay) {
+    clearInterval(updateTime);// audio.src = 'https://l1senochek.github.io/momentum/assets/sounds/Metal%20Hellsinger%20-%20No%20Tomorrow%20ft%20Serj%20Tankian%20from%20System%20of%20a%20Down.mp3';
+    // audio.src = '../assets/sounds/Jin Hashimoto - Stand Proud.mp3';
+    resetTime();
+    audio.src = playList[playNum].src;
+    previousSongPlay = playNum;
+    addBtn();
+    audio.play();
+    removeItemActive();
+    let selectedSong = document.querySelector(`.class${playNum}`);
+    selectedSong.classList.add('item-active');
+    isPlay = true;
+    console.log(playNum);
+    updateTime = setInterval(updateTimeSong, 1000);
+  } else if (previousSongPlay === playNum && isPlay) {
+    previousSongPlay = playNum;
+    isPlay = false;
+    removeBtn();
+    audio.pause();
+  } else {
+    audio.src = playList[playNum].src;
+    addBtn();
+    audio.play();
+    isPlay = true;
+    removeItemActive();
+    let selectedSong = document.querySelector(`.class${playNum}`);
+    selectedSong.classList.add('item-active');
+    previousSongPlay = playNum;
+  }
+}
+
 audio.addEventListener('ended', function () {
-  playNext()
+  playNext();
 });
 
 play.addEventListener('click', playAudio);
-
-function toggleBtn() {
-  play.classList.toggle('pause');
-}
 
 function addBtn() {
   play.classList.add('pause');
@@ -208,37 +262,20 @@ function removeBtn() {
   play.classList.remove('pause');
 }
 
-
-
-
-
 // 5.1 switching track
 
 function playNext() {
-
   playNum++;
   if (playNum > 3) {
     playNum = 0;
   };
-
   audio.src = playList[playNum].src;
-  console.log('src', audio.src);
-
-  console.log('playNum', playNum);
-
   isPlay = false;
-  switchingPause(); // ??????
-
+  addBtn();
   if (isPlay) {
-
-
   } else {
     playAudio();
-
   }
-
-  //.item-active
-
 }
 
 function playPrev() {
@@ -247,80 +284,96 @@ function playPrev() {
     playNum = 3;
   };
   audio.src = playList[playNum].src;
-
   isPlay = false;
-  switchingPause(); // ??????
-
+  addBtn();
   playAudio();
-  // console.log('playNum', playNum);
-
-}
-
-// switching sound
-function switchingSound() {
-
 }
 
 playPrevSound.addEventListener('click', playPrev);
 playNextSound.addEventListener('click', playNext);
-
-function switchingPause() {
-  if (!isPlay) {
-    play.addEventListener('click', toggleBtn);
-    playPrevSound.addEventListener('click', addBtn);
-    playNextSound.addEventListener('click', addBtn);
-  } else {
-    pause.addEventListener('click', removeBtn);
-  }
-}
-switchingPause();
 
 // 5.2 playlist
 
 import playList from './playList.js';
 
 audio.src = playList[playNum].src;
-console.log('playList', playList, audio.src);
 
 function createPlaylist() {
-
+  let j = 0;
   playList.forEach(el => {
     const li = document.createElement('li');
     li.classList.add('play-item');
     let elementTitle = el.title;
-
-
-    console.log('li', li);
-
-
-
+    li.classList.add(`class${j}`);
     playListPlayer.appendChild(li);
     li.textContent = elementTitle;
+    j++;
   });
+  
 }
 
 createPlaylist();
+const playItem = document.querySelectorAll(".play-item");
+console.log('playItem', playItem);
 
-//ширина элемента
-//document.querySelector('.myDiv').offsetWidth
+playItem.forEach(el => {
+  el.addEventListener('click', clickSongPlay);
+});
 
-function progressBarSound() {
-  // widthAudioTrack = 
-  console.log('widthAudioTrack', widthAudioTrack);
-  console.log('.duration', audio.duration, playNum);
-  console.log('.currentTime', audio.currentTime);
-
-
+function removeItemActive() {
+  let selectedSong = document.querySelectorAll('.item-active');
+  selectedSong.forEach(el => {
+    el.classList.remove('item-active');
+  });
 }
-progressBarSound();
+
+function clickSongPlay() {
+  playNum = ((this.className).toString()).slice(15, 16);
+  playAudio();
+}
+
 console.log('duration', playNum, playList[playNum].duration)
 //convert
-function formatTime(seconds) {
-  let min = Math.floor((seconds / 60));
-  let sec = Math.floor(seconds - (min * 60));
-  if (sec < 10) {
-    sec = `0${sec}`;
-  };
-  return `${min}:${sec}`;
-};
 
+function resetTime() {
+  trackTime.textContent = "00:00";
+  durationTime.textContent = "00:00";
+  audioTrack.value = 0;
+}
+let audioTrackId = document.getElementById('audioTrackId');
+audioTrackId.addEventListener('change', trakingSong);
+
+function trakingSong() {
+  let trakingSong = audio.duration * (audioTrack.value / 100);
+  audio.currentTime = trakingSong;
+}
+
+function updateTimeSong() {
+  let clickPositionTime = 0; 
+  if (!isNaN(audio.duration)) {
+    clickPositionTime = audio.currentTime * (100 / audio.duration);
+    audioTrack.value = clickPositionTime;
+
+    let currentMin = Math.floor(audio.currentTime / 60);
+    let currentSec = Math.floor(audio.currentTime - currentMin * 60);
+    let durationMin = Math.floor(audio.duration / 60);
+    let durationSec = Math.floor(audio.duration - durationMin * 60);
+    
+    if (currentSec < 10) {
+      currentSec = "0" + currentSec;
+    }
+    if (durationSec < 10) {
+      durationSec = "0" + durationSec;
+    }
+    if (currentMin < 10) {
+      currentMin = "0" + currentMin;
+    }
+    if (durationMin < 10) {
+      durationMin = "0" + durationMin;
+    }
+
+    trackTime.textContent = currentMin + ":" + currentSec;
+    durationTime.textContent = durationMin + ":" + durationSec;
+  
+  }
+}

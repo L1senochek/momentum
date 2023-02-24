@@ -14,13 +14,15 @@
   <header class="header">
     <div class="player">
       <div class="wrapper-audio">
-        <div class="audio-track">
+        <!-- <div class="audio-track">
           <div class="audio-time"></div>
-        </div>
+        </div> -->
+        <input type="range" min="1" max="100" value="0" class="audio-track"  id="audioTrackId">
         <div class="track-time">0:00</div>
         <span>/</span>
         <div class="duration-time">0:00</div>
-        <div class="volume-track">#</div>
+        <div class="volume-track"></div>
+        <input type="range" min="1" max="100" value="50" class="sound-volume" onchange="setVolume()">
       </div>
       <div class="player-controls">
         <button class="play-prev player-icon"></button>
@@ -30,7 +32,8 @@
       <ul class="play-list"></ul>
     </div>
     <div class="weather">
-      <div class="city" contenteditable="true">Moscow</div>
+      <!-- <div class="city" contenteditable="true">Moscow</div> -->
+      <input class="city" type="text">
       <i class="weather-icon owf"></i>
       <div class="weather-error"></div>
       <div class="description-container">
@@ -60,7 +63,7 @@
       <div class="author"></div>
     </div>
   </footer>
-  <script src="js/script.js" type="module"></script>
+  <script src="js/script.js" type="module" defer></script>
 </body>
 
 </html>
