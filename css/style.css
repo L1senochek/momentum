@@ -155,6 +155,11 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   cursor: pointer;
 }
 
+.player{
+  transition: 0.5s;
+  opacity: 1;
+}
+
 .player-controls {
   display: flex;
   align-items: center;
@@ -257,6 +262,8 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   width: 180px;
   min-height: 180px;
   text-align: left;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .weather-error {
@@ -329,12 +336,16 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   font-family: 'Arial-MT';
   font-size: 100px;
   letter-spacing: -4px;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .date {
   min-height: 28px;
   font-size: 24px;
   margin-bottom: 20px;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .greeting-container {
@@ -345,6 +356,8 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   min-height: 48px;
   width: 100vw;
   font-size: 40px;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .greeting {
@@ -363,6 +376,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   background-color: transparent;
   border: 0;
   outline: 0;
+  z-index: 22;
 }
 
 .name::placeholder {
@@ -371,14 +385,6 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
 }
 
 .footer {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  height: 30vh;
-  min-height: 160px;
-  padding: 20px; */
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -392,13 +398,15 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   flex-direction: column;
   position: absolute;
   padding-right: 1250px;
+  z-index: 21;
 }
 
 .settings{
   background-image: url("../assets/img/settings.png");
   height: 24px;
   width: 24px;
-  /* margin-bottom: 20px; */
+  cursor: pointer;
+  z-index: 22;
 }
 
 .settings-content{
@@ -408,17 +416,42 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   height: 0;
   /* height: 240px; */
   overflow: hidden;
-  
+  margin-bottom: 20px;
+  z-index: 21;
+  transition: 0.5s;
+  opacity: 0;
 }
 
-.wrapper-settings-content{
+.wrapper-settings-content {
   height: 30px;
   display: flex;
   flex-direction: column;
-  /* align-content: center; */
   align-items: flex-start;
   justify-content: center;
   cursor: pointer;
+}
+
+.wrapper-checkbox {
+  height: 210px;
+}
+
+.wrapper-settings-image {
+  /* height: 30px; */
+  height: 60px;
+
+}
+
+.wrapper-image-source {
+  padding-left: 3px;
+  height: 54px;
+  overflow: hidden;
+}
+
+.wrapper-image-source-settings {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .wrapper-contains-check {
@@ -430,7 +463,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   flex-wrap: nowrap;
 }
 
-.language-select{
+.language-settings{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -440,7 +473,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
 .wrapper-language{
   display: flex;
   align-items: center;
-  /* height: 0; */
+  height: 0;
   justify-content: space-between;
   overflow: hidden;
   width: 60px;
@@ -450,6 +483,9 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   color: #ffffff;
 }
 
+.unsplash:hover,
+.flickr:hover,
+.github:hover,
 .language:hover {
   color: #00ffff;
 }
@@ -462,8 +498,10 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
 .wrapper-settings-content:hover>.settings-line {
   border: 1px solid #00ffff;
 }
+
 .wrapper-settings-content:hover>.settings-title,
-.wrapper-settings-content:hover>.wrapper-contains-check:hover>.settings-title {
+.wrapper-settings-content:hover>.wrapper-contains-check:hover>.settings-title,
+.wrapper-settings-content:hover>.wrapper-image-source-settings:hover>.settings-title {
   color: #00ffff;
 }
 
@@ -535,11 +573,14 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   height: 30vh;
   min-height: 160px;
   padding: 20px;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .change-quote {
   margin-bottom: 30px;
   background-image: url("../assets/svg/reload.svg");
+  z-index: 21;
 }
 
 .quote {

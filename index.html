@@ -50,8 +50,8 @@
       <button class="slide-prev slider-icon"></button>
       <button class="slide-next slider-icon"></button>
     </div>
-    <time class="time"></time>
-    <date class="date"></date>
+    <div class="time"></div>
+    <div class="date"></div>
     <div class="greeting-container">
       <span class="greeting"></span>
       <input type="text" class="name" placeholder="[Enter name]" />
@@ -61,11 +61,16 @@
     <div class="wrapper-settings">
       <div class="settings-content">
         <div class="wrapper-settings-content">
+          <div class="btn-clear">Reset settings</div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
           <div class="photo-source settings-title">Photo source</div>
           <div class="settings-line"></div>
         </div>
         <div class="wrapper-settings-content">
-          <div class="language-select settings-title">Language
+          <div class="language-settings settings-title">
+            <div class="language-title">Language</div>
             <div class="wrapper-language">
               <div class="language en">en</div>
               <div class="language ru">ru</div>
@@ -74,66 +79,75 @@
           </div>
           <div class="settings-line"></div>
         </div>
-        <div class="wrapper-settings-content">
-          <div class="settings-title">nature</div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Time</div>
-            <input type="checkbox" class="check" id="check-time"/>
-            <label for="check-time"></label>
+        <div class="wrapper-settings-content wrapper-settings-image">
+          <div class="wrapper-image-source-settings">
+            <div class="image-source settings-title">Image source</div>
+            <div class="wrapper-image-source">
+              <div class="unsplash">Unsplash</div>
+              <div class="flickr">Flickr</div>
+              <div class="github">Github</div>
+            </div>
           </div>
           <div class="settings-line"></div>
         </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Data</div>
-            <input type="checkbox" class="check" id="check-data"/>
-            <label for="check-data"></label>
+        <form class="wrapper-checkbox wrapper-settings-content" id="wrapper-checkbox">
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="time-title settings-title">Time</div>
+              <input type="checkbox" class="check" id="check-time" checked="checked"/>
+              <label for="check-time"></label>
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Greeting</div>
-            <input type="checkbox" class="check" id="check-greeting"/>
-            <label for="check-greeting"></label>
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="data-title settings-title">Data</div>
+              <input type="checkbox" class="check" id="check-data" checked="checked"/>
+              <label for="check-data"></label>
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Quote of the day</div>
-            <input type="checkbox" class="check" id="check-quote"/>
-            <label for="check-quote"></label>
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="greeting-title settings-title">Greeting</div>
+              <input type="checkbox" class="check" id="check-greeting" checked="checked"/>
+              <label for="check-greeting"></label>
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Weather widget</div>
-            <input type="checkbox" class="check" id="check-weather"/>
-            <label for="check-weather"></label> 
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="quote-of-the-day-title settings-title">Quote of the day</div>
+              <input type="checkbox" class="check" id="check-quote" checked="checked"/>
+              <label for="check-quote"></label>
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">Audio player</div>
-            <input type="checkbox" class="check" id="check-audio-player"/>
-            <label for="check-audio-player"></label>
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="weather-widget-title settings-title">Weather widget</div>
+              <input type="checkbox" class="check" id="check-weather" checked="checked"/>
+              <label for="check-weather"></label> 
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
-        <div class="wrapper-settings-content">
-          <div class="wrapper-contains-check">
-            <div class="settings-title">ToDo</div>
-            <input type="checkbox" class="check" id="check-todo"/>
-            <label for="check-todo"></label>
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="audio-player-title settings-title">Audio player</div>
+              <input type="checkbox" class="check" id="check-audio-player" checked="checked"/>
+              <label for="check-audio-player"></label>
+            </div>
+            <div class="settings-line"></div>
           </div>
-          <div class="settings-line"></div>
-        </div>
+          <div class="wrapper-settings-content">
+            <div class="wrapper-contains-check">
+              <div class="to-do settings-title">ToDo</div>
+              <input type="checkbox" class="check" id="check-todo" checked="checked"/>
+              <label for="check-todo"></label>
+            </div>
+            <div class="settings-line"></div>
+          </div>
+        </form>
       </div>
       <div class="settings"></div>
     </div>
@@ -150,7 +164,7 @@
       <li class="logo-rs"><a href="https://rs.school/js-stage0/" target="_blank"><img class="logo-rsschool-img" src="assets/img/logo_rs.png" alt="RS"></a></li>
     </ul>
   </footer>
-  <script src="js/script.js" type="module" defer></script>
+  <script src="js/script.js" type="module"></script>
 </body>
 
 </html>
