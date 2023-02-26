@@ -13,16 +13,17 @@
 <body>
   <header class="header">
     <div class="player">
+      <div class="current-song-title"></div>
       <div class="wrapper-audio">
         <!-- <div class="audio-track">
           <div class="audio-time"></div>
         </div> -->
-        <input type="range" min="1" max="100" value="0" class="audio-track"  id="audioTrackId">
+        <input type="range" min="1" max="100" value="0" class="audio-track audio-progress"  id="audioTrackId">
         <div class="track-time">0:00</div>
         <span>/</span>
         <div class="duration-time">0:00</div>
         <div class="volume-track"></div>
-        <input type="range" min="1" max="100" value="50" class="sound-volume" onchange="setVolume()">
+        <input type="range" min="1" max="100" value="50" class="sound-volume sound-volume-progress" id="soundVolumeId">
       </div>
       <div class="player-controls">
         <button class="play-prev player-icon"></button>
@@ -57,11 +58,97 @@
     </div>
   </main>
   <footer class="footer">
-    <button class="change-quote"></button>
-    <div>
-      <div class="quote"></div>
-      <div class="author"></div>
+    <div class="wrapper-settings">
+      <div class="settings-content">
+        <div class="wrapper-settings-content">
+          <div class="photo-source settings-title">Photo source</div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="language-select settings-title">Language
+            <div class="wrapper-language">
+              <div class="language en">en</div>
+              <div class="language ru">ru</div>
+              <div class="language be">be</div>
+            </div>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="settings-title">nature</div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Time</div>
+            <input type="checkbox" class="check" id="check-time"/>
+            <label for="check-time"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Data</div>
+            <input type="checkbox" class="check" id="check-data"/>
+            <label for="check-data"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Greeting</div>
+            <input type="checkbox" class="check" id="check-greeting"/>
+            <label for="check-greeting"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Quote of the day</div>
+            <input type="checkbox" class="check" id="check-quote"/>
+            <label for="check-quote"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Weather widget</div>
+            <input type="checkbox" class="check" id="check-weather"/>
+            <label for="check-weather"></label> 
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">Audio player</div>
+            <input type="checkbox" class="check" id="check-audio-player"/>
+            <label for="check-audio-player"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+        <div class="wrapper-settings-content">
+          <div class="wrapper-contains-check">
+            <div class="settings-title">ToDo</div>
+            <input type="checkbox" class="check" id="check-todo"/>
+            <label for="check-todo"></label>
+          </div>
+          <div class="settings-line"></div>
+        </div>
+      </div>
+      <div class="settings"></div>
     </div>
+    <div class="wrapper-quote">
+      <button class="change-quote"></button>
+      <div>
+        <div class="quote"></div>
+        <div class="author"></div>
+      </div>
+    </div>
+    <ul class="wrapper-logo">
+      <li class="logo-data">2023</li>
+      <li class="logo-github"><a href="https://github.com/L1senochek" target="_blank"><img class="logo-github-img" src="assets/img/github.png" alt="github"></a></li>
+      <li class="logo-rs"><a href="https://rs.school/js-stage0/" target="_blank"><img class="logo-rsschool-img" src="assets/img/logo_rs.png" alt="RS"></a></li>
+    </ul>
   </footer>
   <script src="js/script.js" type="module" defer></script>
 </body>
