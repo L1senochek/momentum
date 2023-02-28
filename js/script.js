@@ -839,9 +839,11 @@ async function getLinkToImageFlickr() {
 // }
 
 console.clear()
-
+const toDoList = document.getElementsByClassName("todo-list");
+const closeToDo = document.getElementsByClassName("close-todo");
+console.log('toDoList', toDoList, closeToDo)
 function toDo() {
-  const toDoList = document.getElementsByTagName("LI");
+  
   for (let j = 0; j < toDoList.length; j++) {
     let span = document.createElement("SPAN");
     let txt = document.createTextNode("\u00D7");
@@ -850,7 +852,7 @@ function toDo() {
     toDoList[j].appendChild(span);
 
   }
-  const closeToDo = document.getElementsByClassName("close-todo");
+  
   for (let i = 0; i < closeToDo.length; i++) {
     closeToDo[i].onclick = function () {
       let list = this.parentElement;
@@ -859,9 +861,11 @@ function toDo() {
 
   }
   const list = document.querySelector('.my-todo-list');
+  console.log('list',list);
   list.addEventListener('click', function (e) {
-    if (e.target.tagName === 'LI') {
-      e.target.classList.toggle('.checked-todo');
+    if (e.target.className === 'todo-list') {
+      console.log(e.target.className)
+      e.target.classList.toggle('checked-todo');
     }
   }, false);
 
@@ -893,9 +897,9 @@ function newElementToDo() {
   span.className = "close-todo";
   span.appendChild(txt);
   li.appendChild(span);
-
-  for (let i = 0; i < close.length; i++) {
-    close[i].onclick = function () {
+  console.log(txt, span, li)
+  for (let k = 0; k < closeToDo.length; k++) {
+    closeToDo[k].onclick = function () {
       let list = this.parentElement;
       list.style.display = "none";
     }
