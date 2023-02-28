@@ -72,15 +72,15 @@ let source;
 // 8. translation (en/ru or en/be)
 
 let greetingTranslation = {
-  en: ["Good morning", "Good afternoon", "Good evening", "Good night"], 
+  en: ["Good morning", "Good afternoon", "Good evening", "Good night"],
   ru: ["Доброе утро", "Добрый день", "Добрый вечер", "Доброй ночи"],
   be: ["Доброе утро", "Добрый день", "Добрый вечар", "Доброй ночи"]
 }
 
 let weatherTranslation = {
-  en: ["Wind speed", "m/s", "Humidity"], 
+  en: ["Wind speed", "m/s", "Humidity"],
   ru: ["Скорость ветра", "м/с", "Влажность"],
-  be: ["Скорость ветра", "м/с", "Влажность"]
+  be: ["Хуткасць ветру", "м/с", "Вільготнасць"]
 }
 
 let settingsTranslation = {
@@ -94,6 +94,7 @@ ru.addEventListener('click', changeRu);
 function changeRu() {
   currentLanguage = "ru";
   getWeather();
+  name.placeholder = "Введите имя";
   getQuotes();
   settingsTranslationMenu();
 }
@@ -103,6 +104,7 @@ en.addEventListener('click', changeEn);
 function changeEn() {
   currentLanguage = "en";
   getWeather();
+  name.placeholder = "Enter name";
   getQuotes();
   settingsTranslationMenu();
 }
@@ -112,6 +114,7 @@ be.addEventListener('click', changeBe);
 function changeBe() {
   currentLanguage = "be";
   getWeather();
+  name.placeholder = "Увядзіце імя";
   getQuotes();
   settingsTranslationMenu();
 }
@@ -136,13 +139,13 @@ function settingsClick() {
   }
   window.addEventListener('click', e => {
     const target = e.target
-    if (!target.closest('.settings-content') && !target.closest('.settings')) { 
+    if (!target.closest('.settings-content') && !target.closest('.settings')) {
       settingsContent.style.height = "0px";
       settingsContent.style.opacity = 0;
     }
   })
-  document.addEventListener('keydown', function(e) {
-    if(e.keyCode === 27) { 
+  document.addEventListener('keydown', function (e) {
+    if (e.keyCode === 27) {
       settingsContent.style.height = "0px";
       settingsContent.style.opacity = 0;
     }
@@ -163,7 +166,7 @@ function showTime() {
   time.textContent = currentTime;
   setTimeout(showTime, 1000);
   showDate();
- showGreeting();
+  showGreeting();
 }
 showTime();
 
@@ -270,8 +273,8 @@ function githubSet() {
 
 function imgSource() {
   if (!source) {
-    source = 'unsplash';
-    // source = 'github';    
+    // source = 'unsplash';
+    source = 'github';
   }
 }
 
@@ -298,13 +301,13 @@ slidePrev.addEventListener('click', getSlidePrev);
 ///////////////////////////////////////////////
 // 4. Weather Widget
 
-function localStoreCity () {
+function localStoreCity() {
   localStorage.setItem('city', city.value);
 }
 window.addEventListener('beforeunload', localStoreCity);
 
 function localRestoreCity() {
-  if(localStorage.getItem('city')) {
+  if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
   } else {
     city.value = 'Moscow';
@@ -394,7 +397,7 @@ function playAudio() {
     audio.currentTime = currentTimeSong;
     if (audio.currentTime === 0) {
       progressTraking();
-    } 
+    }
     audio.play();
     removeItemActive();
     let selectedSong = document.querySelector(`.class${playNum}`);
@@ -481,7 +484,7 @@ function createPlaylist() {
     li.textContent = elementTitle;
     j++;
   });
-  
+
 }
 
 createPlaylist();
@@ -513,21 +516,21 @@ audioTrackId.addEventListener('change', trakingSong);
 function trakingSong() {
   let trakingSong = audio.duration * (audioTrack.value / 100);
   audio.currentTime = trakingSong;
-} 
+}
 
 function updateTimeSong() {
-  let clickPositionTime = 0; 
+  let clickPositionTime = 0;
   if (!isNaN(audio.duration)) {
     clickPositionTime = audio.currentTime * (100 / audio.duration);
     audioTrack.value = clickPositionTime;
-    
+
     currentTimeSong = audio.currentTime;
 
     let currentMin = Math.floor(audio.currentTime / 60);
     let currentSec = Math.floor(audio.currentTime - currentMin * 60);
     let durationMin = Math.floor(audio.duration / 60);
     let durationSec = Math.floor(audio.duration - durationMin * 60);
-    
+
     if (currentSec < 10) {
       currentSec = "0" + currentSec;
     }
@@ -543,11 +546,11 @@ function updateTimeSong() {
 
     trackTime.textContent = currentMin + ":" + currentSec;
     durationTime.textContent = durationMin + ":" + durationSec;
-    
+
 
   }
 }
- 
+
 // sound volume
 let soundVolumeId = document.getElementById('soundVolumeId');
 soundVolumeId.addEventListener('change', soundVolume);
@@ -558,7 +561,7 @@ function soundVolume() {
 
 volumeTrack.addEventListener('click', volumeTrackMute);
 
-function volumeTrackMute () {
+function volumeTrackMute() {
   if (audio.muted === true) {
     volumeTrack.style.background = `url("../momentum/assets/img/volume_up.png")`;
     audio.muted = false;
@@ -736,7 +739,7 @@ function checkStorage() {
       checkboxAll[i].value = localStorage.getItem(checkboxAll[i].name);
 
     }
-    
+
   }
   addEvent();
 }
@@ -744,7 +747,7 @@ function checkStorage() {
 function addEvent() {
   for (let i = 0; i < checkboxAll.length; i++) {
     checkboxAll[i].addEventListener('change', changeValue)
-    
+
   }
 }
 checkStorage();
@@ -767,10 +770,157 @@ async function getLinkToImageFlickr() {
   const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=36dbb7f146c9be238bd70d50ee2d636a&tags=${timeOfDay}&extras=url_l&format=json&nojsoncallback=1`;
   const resultImg = await fetch(url);
   const dataImg = await resultImg.json();
-  
+
   console.log(dataImg);
   //return dataImg.urls.full;
   let randomNumberPhoto = Math.floor(Math.random() * 100);
   console.log(randomNumberPhoto, dataImg.photos.photo[randomNumberPhoto].url_l);
   return dataImg.photos.photo[randomNumberPhoto].url_l;
 }
+
+
+/////////////////////////////////////////////////////////
+// 11. ToDo
+
+// // Create a "close" button and append it to each list item
+// var myNodelist = document.getElementsByTagName("LI");
+// var i;
+// for (i = 0; i < myNodelist.length; i++) {
+//   var span = document.createElement("SPAN");
+//   var txt = document.createTextNode("\u00D7");
+//   span.className = "close";
+//   span.appendChild(txt);
+//   myNodelist[i].appendChild(span);
+// }
+
+// // Click on a close button to hide the current list item
+// var close = document.getElementsByClassName("close");
+// var i;
+// for (i = 0; i < close.length; i++) {
+//   close[i].onclick = function () {
+//     var div = this.parentElement;
+//     div.style.display = "none";
+//   }
+// }
+
+// // Add a "checked" symbol when clicking on a list item
+// var list = document.querySelector('ul');
+// list.addEventListener('click', function (ev) {
+//   if (ev.target.tagName === 'LI') {
+//     ev.target.classList.toggle('checked');
+//   }
+// }, false);
+
+// // Create a new list item when clicking on the "Add" button
+// function newElement() {
+//   var li = document.createElement("li");
+//   var inputValue = document.getElementById("myInput").value;
+//   var t = document.createTextNode(inputValue);
+//   li.appendChild(t);
+//   if (inputValue === '') {
+//     alert("You must write something!");
+//   } else {
+//     document.getElementById("myUL").appendChild(li);
+//   }
+//   document.getElementById("myInput").value = "";
+
+//   var span = document.createElement("SPAN");
+//   var txt = document.createTextNode("\u00D7");
+//   span.className = "close";
+//   span.appendChild(txt);
+//   li.appendChild(span);
+
+//   for (i = 0; i < close.length; i++) {
+//     close[i].onclick = function () {
+//       var div = this.parentElement;
+//       div.style.display = "none";
+//     }
+//   }
+// }
+
+console.clear()
+
+function toDo() {
+  const toDoList = document.getElementsByTagName("LI");
+  for (let j = 0; j < toDoList.length; j++) {
+    let span = document.createElement("SPAN");
+    let txt = document.createTextNode("\u00D7");
+    span.className = "close-todo";
+    span.appendChild(txt);
+    toDoList[j].appendChild(span);
+
+  }
+  const closeToDo = document.getElementsByClassName("close-todo");
+  for (let i = 0; i < closeToDo.length; i++) {
+    closeToDo[i].onclick = function () {
+      let list = this.parentElement;
+      list.style.display = "none";
+    }
+
+  }
+  const list = document.querySelector('.my-todo-list');
+  list.addEventListener('click', function (e) {
+    if (e.target.tagName === 'LI') {
+      e.target.classList.toggle('.checked-todo');
+    }
+  }, false);
+
+
+
+
+}
+toDo();
+
+const newElementToDoList = document.getElementById('newElementToDo');
+newElementToDoList.addEventListener('click', newElementToDo);
+
+function newElementToDo() {
+  const li = document.createElement("li");
+  let inputValue = document.getElementById("toDoInput").value;
+  const text = document.createTextNode(inputValue);
+  console.log('li', li)
+  li.appendChild(text);
+  li.classList.add('todo-list');
+  if (inputValue === '') {
+    alert("Enter To Do list!");
+  } else {
+    document.getElementById("myToDoList").appendChild(li);
+  }
+  document.getElementById("toDoInput").value = "";
+
+  let span = document.createElement("SPAN");
+  let txt = document.createTextNode("\u00D7");
+  span.className = "close-todo";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (let i = 0; i < close.length; i++) {
+    close[i].onclick = function () {
+      let list = this.parentElement;
+      list.style.display = "none";
+    }
+  }
+}
+
+
+////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
