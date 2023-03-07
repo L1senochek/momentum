@@ -59,28 +59,46 @@ const github = document.querySelector('.github');
 const checkboxWrapper = document.getElementById('wrapper-checkbox');
 const checkboxAll = checkboxWrapper.elements;
 const btnClear = document.querySelector('.btn-clear');
-
+//
+const checkTodoId = document.getElementById('check-todo');
+const checkTodo = document.querySelector('.wrapper-todo-list');
+const checkAudioPlayer = document.getElementById('check-audio-player');
+const playerWrapper = document.querySelector('.player');
+const checkQuote = document.getElementById('check-quote');
+const wrapperQuote = document.querySelector('.wrapper-quote');
+const checkData = document.getElementById('check-data');
+const checkTime = document.getElementById('check-time');
+const checkGreeting = document.getElementById('check-greeting');
+const greetingContainer = document.querySelector('.greeting-container');
+const checkWeather = document.getElementById('check-weather');
+const weather = document.querySelector('.weather');
+//
+const toDoList = document.getElementsByClassName("todo-list");
+const closeToDo = document.getElementsByClassName("close-todo");
+const toDoListHeading = document.querySelector('.todo-list-heading');
+const toDoInput = document.querySelector('.to-do-input');
+const addToDoBtn = document.querySelector('.addToDoBtn');
 
 let randomNum;
 let isPlay = false;
 let playNum = 0;
 let updateTime;
 let timeOfDay;
-let currentLanguage;
+
 let source;
 
 // 8. translation (en/ru or en/be)
 
 let greetingTranslation = {
-  en: ["Good morning", "Good afternoon", "Good evening", "Good night"], 
+  en: ["Good morning", "Good afternoon", "Good evening", "Good night"],
   ru: ["Доброе утро", "Добрый день", "Добрый вечер", "Доброй ночи"],
   be: ["Доброе утро", "Добрый день", "Добрый вечар", "Доброй ночи"]
 }
 
 let weatherTranslation = {
-  en: ["Wind speed", "m/s", "Humidity"], 
+  en: ["Wind speed", "m/s", "Humidity"],
   ru: ["Скорость ветра", "м/с", "Влажность"],
-  be: ["Скорость ветра", "м/с", "Влажность"]
+  be: ["Хуткасць ветру", "м/с", "Вільготнасць"]
 }
 
 let settingsTranslation = {
@@ -89,37 +107,92 @@ let settingsTranslation = {
   be: ["Скід налад", "Крыніца фота", "Мова", "Крыніца выявы", "Час", "Дата", "Прывітанне", "Цытата дня", "Віджэт надвор'я", "Аўдыяплэер", "Задачы"]
 }
 
-ru.addEventListener('click', changeRu);
-
-function changeRu() {
-  currentLanguage = "ru";
-  getWeather();
-  getQuotes();
-  settingsTranslationMenu();
+let toDoTranslation = {
+  en: ["To Do List", "Enter To Do", "Add", "Your task"],
+  ru: ["Задачи", "Введите задачу", "Добавить", "Ваша задача"],
+  be: ["Задачы", "Увядзіце задачу", "Дадаць", "Ваша задача"]
 }
+
+function translatePlaceholdertoDo() {
+  if (currentLanguage === "ru") {
+    toDoInput.placeholder = "Введите задачу";
+  } else if (currentLanguage === "en") {
+    toDoInput.placeholder = "Enter To Do";
+  } else if (currentLanguage === "be") {
+    toDoInput.placeholder = "Увядзіце задачу";
+  }
+}
+
+function translateToDo() {
+  toDoListHeading.textContent = `${toDoTranslation[currentLanguage][0]}`;
+  toDoInput.textContent = `${toDoTranslation[currentLanguage][1]}`;
+  addToDoBtn.textContent = `${toDoTranslation[currentLanguage][2]}`;
+}
+
+let currentLanguage = getLanguageLocalStorage();
+translatePlaceholder();
+translatePlaceholdertoDo();
 
 en.addEventListener('click', changeEn);
 
 function changeEn() {
   currentLanguage = "en";
-  getWeather();
+  changeLanguageLocalStorage("en");
+  translatePlaceholder();
+  translatePlaceholdertoDo();
   getQuotes();
   settingsTranslationMenu();
+  translateToDo();
+}
+
+ru.addEventListener('click', changeRu);
+
+function changeRu() {
+  currentLanguage = "ru";
+  changeLanguageLocalStorage("ru");
+  translatePlaceholder();
+  translatePlaceholdertoDo();
+  getQuotes();
+  settingsTranslationMenu();
+  translateToDo();
 }
 
 be.addEventListener('click', changeBe);
 
 function changeBe() {
   currentLanguage = "be";
-  getWeather();
+  changeLanguageLocalStorage("be");
+  translatePlaceholder();
+  translatePlaceholdertoDo();
   getQuotes();
   settingsTranslationMenu();
+  translateToDo();
+}
+
+function translatePlaceholder() {
+  if (currentLanguage === "ru") {
+    name.placeholder = "Введите имя";
+  } else if (currentLanguage === "en") {
+    name.placeholder = "Enter name";
+  } else if (currentLanguage === "be") {
+    name.placeholder = "Увядзіце імя";
+  }
 }
 
 function checkCurrentLanguage() {
-  if (!currentLanguage) {
+  if (!currentLanguage ) {
     changeEn();
-  }
+  } 
+}
+
+checkCurrentLanguage();
+
+function changeLanguageLocalStorage(language) {
+  localStorage.setItem(`language`, language);
+}
+
+function getLanguageLocalStorage() {
+  return localStorage.getItem(`language`);
 }
 
 // 10. settings
@@ -136,22 +209,53 @@ function settingsClick() {
   }
   window.addEventListener('click', e => {
     const target = e.target
-    if (!target.closest('.settings-content') && !target.closest('.settings')) { 
+    if (!target.closest('.settings-content') && !target.closest('.settings')) {
       settingsContent.style.height = "0px";
       settingsContent.style.opacity = 0;
     }
   })
-  document.addEventListener('keydown', function(e) {
-    if(e.keyCode === 27) { 
+  document.addEventListener('keydown', function (e) {
+    if (e.keyCode === 27) {
       settingsContent.style.height = "0px";
       settingsContent.style.opacity = 0;
     }
   });
 }
+
 btnClear.addEventListener('click', clearStorage);
 
 function clearStorage() {
-  localStorage.clear();
+  localStorage.setItem('storedToDoList', '[]');
+  removeToDoListAll();
+  changeEn();
+  name.value = localStorage.getItem('name', '');
+  localStorage.setItem('city', 'Moscow');
+  getWeather();
+  resetCheckbox('check-todo');
+  getItemFromLocalStorage('check-todo');
+  saveCheckToLocalStorage(checkTodoId, checkTodo);
+  resetCheckbox('check-audio-player');
+  getItemFromLocalStorage('check-audio-player');
+  saveCheckToLocalStorage(checkAudioPlayer, playerWrapper);
+  resetCheckbox('check-weather');
+  getItemFromLocalStorage('check-weather');
+  saveCheckToLocalStorage(checkWeather, weather);
+  resetCheckbox('check-quote');
+  getItemFromLocalStorage('check-quote');
+  saveCheckToLocalStorage(checkQuote, wrapperQuote);
+  resetCheckbox('check-greeting');
+  getItemFromLocalStorage('check-greeting');
+  saveCheckToLocalStorage(checkGreeting, greetingContainer);
+  resetCheckbox('check-data');
+  getItemFromLocalStorage('check-data');
+  saveCheckToLocalStorage(checkData, date);
+  resetCheckbox('check-time');
+  getItemFromLocalStorage('check-time');
+  saveCheckToLocalStorage(checkTime, time);
+}
+
+function resetCheckbox(check) {
+  localStorage.setItem(`${check}`, true);
 }
 
 ///////////////////////////////////////////////
@@ -163,7 +267,7 @@ function showTime() {
   time.textContent = currentTime;
   setTimeout(showTime, 1000);
   showDate();
- showGreeting();
+  showGreeting();
 }
 showTime();
 
@@ -244,7 +348,6 @@ async function setBg() {
     body.style.backgroundImage = `url(${img.src})`;
   };
 }
-
 setBg();
 
 unsplash.addEventListener('click', unsplashSet);
@@ -270,8 +373,8 @@ function githubSet() {
 
 function imgSource() {
   if (!source) {
-    source = 'unsplash';
-    // source = 'github';    
+    // source = 'unsplash';
+    source = 'github';
   }
 }
 
@@ -298,13 +401,13 @@ slidePrev.addEventListener('click', getSlidePrev);
 ///////////////////////////////////////////////
 // 4. Weather Widget
 
-function localStoreCity () {
+function localStoreCity() {
   localStorage.setItem('city', city.value);
 }
 window.addEventListener('beforeunload', localStoreCity);
 
 function localRestoreCity() {
-  if(localStorage.getItem('city')) {
+  if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
   } else {
     city.value = 'Moscow';
@@ -318,12 +421,19 @@ async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${currentLanguage}&appid=fde70cac528e6b7a31ec5fe4f655c39e&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
-  weatherIcon.className = 'weather-icon owf';
-  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-  temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
-  weatherDescription.textContent = data.weather[0].description;
-  wind.textContent = `${weatherTranslation[currentLanguage][0]}: ${data.main.humidity.toFixed(0)} ${weatherTranslation[currentLanguage][1]}`;
-  humidity.textContent = `${weatherTranslation[currentLanguage][2]}: ${data.main.humidity.toFixed(0)} %`;
+  if (data.message !=='city not found') { //!res.status == 200
+    weatherIcon.className = 'weather-icon owf';
+    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
+    weatherDescription.textContent = data.weather[0].description;
+    wind.textContent = `${weatherTranslation[currentLanguage][0]}: ${data.main.humidity.toFixed(0)} ${weatherTranslation[currentLanguage][1]}`;
+    humidity.textContent = `${weatherTranslation[currentLanguage][2]}: ${data.main.humidity.toFixed(0)} %`;
+  } else {
+    temperature.textContent = `wrong city entered!`;
+    weatherDescription.textContent = '';
+    wind.textContent = ``;
+    humidity.textContent = ``;
+  }
 }
 
 function setCity(event) {
@@ -336,7 +446,7 @@ function setCity(event) {
 }
 
 document.addEventListener('DOMContentLoaded', getWeather);
-city.addEventListener('keypress', setCity);
+city.addEventListener('DOMContentLoaded' && 'keypress', setCity);
 
 ///////////////////////////////////////////////
 // 5. Widget "Quote of the day"
@@ -386,7 +496,6 @@ let currentTimeSong = 0;
 function playAudio() {
   if (!isPlay) {
     clearInterval(updateTime);
-    console.log('updateTime', updateTime);
     audio.src = playList[playNum].src;
     currentSongTitle.innerHTML = playList[playNum].title;
     previousSongPlay = playNum;
@@ -394,7 +503,7 @@ function playAudio() {
     audio.currentTime = currentTimeSong;
     if (audio.currentTime === 0) {
       progressTraking();
-    } 
+    }
     audio.play();
     removeItemActive();
     let selectedSong = document.querySelector(`.class${playNum}`);
@@ -441,6 +550,7 @@ function playNext() {
   if (playNum > 3) {
     playNum = 0;
   };
+  currentTimeSong = 0;
   audio.src = playList[playNum].src;
   isPlay = false;
   addBtn();
@@ -455,6 +565,7 @@ function playPrev() {
   if (playNum < 0) {
     playNum = 3;
   };
+  currentTimeSong = 0;
   audio.src = playList[playNum].src;
   isPlay = false;
   addBtn();
@@ -481,7 +592,6 @@ function createPlaylist() {
     li.textContent = elementTitle;
     j++;
   });
-  
 }
 
 createPlaylist();
@@ -513,21 +623,20 @@ audioTrackId.addEventListener('change', trakingSong);
 function trakingSong() {
   let trakingSong = audio.duration * (audioTrack.value / 100);
   audio.currentTime = trakingSong;
-} 
+}
 
 function updateTimeSong() {
-  let clickPositionTime = 0; 
+  let clickPositionTime = 0;
   if (!isNaN(audio.duration)) {
     clickPositionTime = audio.currentTime * (100 / audio.duration);
     audioTrack.value = clickPositionTime;
-    
     currentTimeSong = audio.currentTime;
 
     let currentMin = Math.floor(audio.currentTime / 60);
     let currentSec = Math.floor(audio.currentTime - currentMin * 60);
     let durationMin = Math.floor(audio.duration / 60);
     let durationSec = Math.floor(audio.duration - durationMin * 60);
-    
+
     if (currentSec < 10) {
       currentSec = "0" + currentSec;
     }
@@ -543,11 +652,9 @@ function updateTimeSong() {
 
     trackTime.textContent = currentMin + ":" + currentSec;
     durationTime.textContent = durationMin + ":" + durationSec;
-    
-
   }
 }
- 
+
 // sound volume
 let soundVolumeId = document.getElementById('soundVolumeId');
 soundVolumeId.addEventListener('change', soundVolume);
@@ -558,7 +665,7 @@ function soundVolume() {
 
 volumeTrack.addEventListener('click', volumeTrackMute);
 
-function volumeTrackMute () {
+function volumeTrackMute() {
   if (audio.muted === true) {
     volumeTrack.style.background = `url("../momentum/assets/img/volume_up.png")`;
     audio.muted = false;
@@ -616,10 +723,7 @@ function clickDisplayLanguage() {
   }
 }
 
-console.log(wrapperLanguage.style.height)
-
-// const wrapperSettingsImage = document.querySelector('.wrapper-settings-image'); //    /* height: 30px;
-const wrapperImageSource = document.querySelectorAll('.wrapper-image-source'); //    /* height: 54px;
+const wrapperImageSource = document.querySelectorAll('.wrapper-image-source'); //    
 
 imageSource.addEventListener('click', clickImageSource);
 
@@ -632,122 +736,72 @@ function clickImageSource() {
     wrapperSettingsImage.style.height = "60px";
   }
 }
+
 /////////////////////////////////////////////////////////
-//checkedbox
+//checkedbox and localstorage settings
 
-const checkTodoId = document.getElementById('check-todo');
-const checkTodo = document.querySelector('.todo');
+checkTodoId.addEventListener('change', () => saveCheckToLocalStorage(checkTodoId, checkTodo));
+checkAudioPlayer.addEventListener('change', () => saveCheckToLocalStorage(checkAudioPlayer, playerWrapper));
+checkWeather.addEventListener('change', () => saveCheckToLocalStorage(checkWeather, weather));
+checkQuote.addEventListener('change', () => saveCheckToLocalStorage(checkQuote, wrapperQuote));
+checkGreeting.addEventListener('change', () => saveCheckToLocalStorage(checkGreeting, greetingContainer));
+checkData.addEventListener('change', () => saveCheckToLocalStorage(checkData, date));
+checkTime.addEventListener('change', () => saveCheckToLocalStorage(checkTime, time));
 
-checkTodoId.addEventListener('change', checkedCheckbox);
-
-function checkedCheckbox() {
-  if (checkTodoId.checked) {
-    checkTodo.style.visibility = 'visible';
+function saveCheckToLocalStorage(check, item) {
+  if (check.checked) {
+    item.style.opacity = 1;
+    localStorage.setItem(`${check.id}`, true);
+    check.checked = true;
   } else {
-    checkTodo.style.visibility = 'hidden';
+    item.style.opacity = 0;
+    localStorage.setItem(`${check.id}`, false);
+    check.checked = false;
   }
-}
-const checkAudioPlayer = document.getElementById('check-audio-player');
-const playerWrapper = document.querySelector('.player');
-checkAudioPlayer.addEventListener('change', checkAudioPlayerCheckbox);
-
-function checkAudioPlayerCheckbox() {
-  if (checkAudioPlayer.checked) {
-    playerWrapper.style.opacity = 1;
-  } else {
-    playerWrapper.style.opacity = 0;
-  }
-}
-
-const checkWeather = document.getElementById('check-weather');
-const weather = document.querySelector('.weather');
-checkWeather.addEventListener('change', checkWeatherCheckbox);
-
-function checkWeatherCheckbox() {
-  if (checkWeather.checked) {
-    weather.style.opacity = 1;
-  } else {
-    weather.style.opacity = 0;
-  }
-}
-
-const checkQuote = document.getElementById('check-quote');
-const wrapperQuote = document.querySelector('.wrapper-quote');
-checkQuote.addEventListener('change', checkQuoteCheckbox);
-
-function checkQuoteCheckbox() {
-  if (checkQuote.checked) {
-    wrapperQuote.style.opacity = 1;
-  } else {
-    wrapperQuote.style.opacity = 0;
-  }
-}
-
-const checkGreeting = document.getElementById('check-greeting');
-const greetingContainer = document.querySelector('.greeting-container');
-checkGreeting.addEventListener('change', checkGreetingCheckbox);
-
-function checkGreetingCheckbox() {
-  if (checkGreeting.checked) {
-    greetingContainer.style.opacity = 1;
-  } else {
-    greetingContainer.style.opacity = 0;
-  }
-}
-
-const checkData = document.getElementById('check-data');
-checkData.addEventListener('change', checkDataCheckbox);
-
-function checkDataCheckbox() {
-  if (checkData.checked) {
-    date.style.opacity = 1;
-  } else {
-    date.style.opacity = 0;
-  }
-}
-
-const checkTime = document.getElementById('check-time');
-checkTime.addEventListener('change', checkTimeCheckbox);
-
-function checkTimeCheckbox() {
-  if (checkTime.checked) {
-    time.style.opacity = 1;
-  } else {
-    time.style.opacity = 0;
-  }
-  console.log(checkTime.checked)
 }
 
 /////////////////////////////////////////////////////////
 //localstorage settings
 
-function changeValue() {
-  if (this.type === 'checkbox') {
-    console.log(this.name, this.checked)
-    localStorage.setItem(this.name, this.checked)
+function getItemFromLocalStorage(check) {
+  let checked = JSON.parse(localStorage.getItem(`${check}`));
+  if (checked !== null) {
+    document.getElementById(`${check}`).checked = checked;
   }
 }
 
-function checkStorage() {
-  for (let i = 0; i < checkboxAll.length; i++) {
-    if (checkboxAll[i].type === 'checked') {
-      checkboxAll[i].checked = localStorage.getItem(checkboxAll[i].name);
-    } else {
-      checkboxAll[i].value = localStorage.getItem(checkboxAll[i].name);
+getItemFromLocalStorage('check-todo');
+getItemFromLocalStorage('check-audio-player');
+getItemFromLocalStorage('check-weather');
+getItemFromLocalStorage('check-quote');
+getItemFromLocalStorage('check-greeting');
+getItemFromLocalStorage('check-data');
+getItemFromLocalStorage('check-time');
 
-    }
-    
+function loadFromLocalStorage() {
+  if (localStorage.getItem('check-todo')) {
+    saveCheckToLocalStorage(checkTodoId, checkTodo);
   }
-  addEvent();
+  if (localStorage.getItem('check-audio-player')) {
+    saveCheckToLocalStorage(checkAudioPlayer, playerWrapper);
+  } 
+  if (localStorage.getItem('check-weather')) {
+    saveCheckToLocalStorage(checkWeather, weather);
+  } 
+  if (localStorage.getItem('check-quote')) {
+    saveCheckToLocalStorage(checkQuote, wrapperQuote);
+  } 
+  if (localStorage.getItem('check-greeting')) {
+    saveCheckToLocalStorage(checkGreeting, greetingContainer);
+  } 
+  if (localStorage.getItem('check-data')) {
+    saveCheckToLocalStorage(checkData, date);
+  } 
+  if (localStorage.getItem('check-time')) {
+    saveCheckToLocalStorage(checkTime, time);
+  } 
 }
-
-function addEvent() {
-  for (let i = 0; i < checkboxAll.length; i++) {
-    checkboxAll[i].addEventListener('change', changeValue)
-    
-  }
-}
-checkStorage();
+loadFromLocalStorage();
 
 /////////////////////////////////////////////////////////
 // 9. unsplash api
@@ -767,10 +821,110 @@ async function getLinkToImageFlickr() {
   const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=36dbb7f146c9be238bd70d50ee2d636a&tags=${timeOfDay}&extras=url_l&format=json&nojsoncallback=1`;
   const resultImg = await fetch(url);
   const dataImg = await resultImg.json();
-  
-  console.log(dataImg);
-  //return dataImg.urls.full;
   let randomNumberPhoto = Math.floor(Math.random() * 100);
-  console.log(randomNumberPhoto, dataImg.photos.photo[randomNumberPhoto].url_l);
   return dataImg.photos.photo[randomNumberPhoto].url_l;
+}
+
+/////////////////////////////////////////////////////////
+// 11. ToDo
+
+function createCrossToDo() {
+  for (let j = 0; j < toDoList.length; j++) {
+    let span = document.createElement("SPAN");
+    let txt = document.createTextNode("\u00D7");
+    span.className = "close-todo";
+    span.appendChild(txt);
+    toDoList[j].appendChild(span);
+  }
+  removeToDoList();
+}
+createCrossToDo();
+
+function removeToDoList() {
+  for (let i = 0; i < closeToDo.length; i++) {
+    closeToDo[i].onclick = function () {
+      let list = this.parentElement;
+      list.remove();
+      storeTasks();
+    }
+  }
+}
+
+const list = document.querySelector('.my-todo-list');
+
+function toggleCheckedToDo() {
+  list.addEventListener('click', function (e) {
+    if (e.target.classList.contains('checked-todo')) {
+      e.target.classList.remove('checked-todo');
+    } else {
+      if (e.target.className === 'todo-list') {
+        e.target.classList.add('checked-todo');
+      }
+    }
+  }, false);
+}
+toggleCheckedToDo();
+
+const newElementToDoList = document.getElementById('newElementToDo');
+newElementToDoList.addEventListener('click', newElementToDo);
+
+function newElementToDo() {
+  const li = document.createElement("li");
+  let inputValue = document.getElementById("toDoInput").value;
+  const text = document.createTextNode(inputValue);
+  li.appendChild(text);
+  li.classList.add('todo-list');
+  if (inputValue === '') {
+    alert("Enter To Do list!");
+  } else {
+    document.getElementById("myToDoList").appendChild(li);
+  }
+  document.getElementById("toDoInput").value = "";
+  let span = document.createElement("SPAN");
+  let txt = document.createTextNode("\u00D7");
+  span.className = "close-todo";
+  span.appendChild(txt);
+  li.appendChild(span);
+  removeToDoList();
+  storeTasks();
+}
+
+//// localStorage
+
+function storeTasks() {
+  let arr = [];
+  let lengthToDoList = document.getElementById('myToDoList').getElementsByTagName('li');
+  for (let i = 0; i < lengthToDoList.length; i++) {
+    arr.push(`${lengthToDoList[i].textContent.slice(0, -1)}`);
+  }
+  localStorage.setItem('storedToDoList', JSON.stringify(arr));
+}
+
+function restoreTasks() {
+  const toDoList = document.getElementById('myToDoList');
+  document.getElementById('toDoList').remove();
+  let arrLocalStorage = JSON.parse(localStorage.getItem('storedToDoList'));
+
+  if (arrLocalStorage !== null ) {
+    for (let i = 0; i < arrLocalStorage.length; i++) {
+      let li = document.createElement("li");
+      li.innerHTML = arrLocalStorage[i];
+      toDoList.appendChild(li);
+      li.classList.add('todo-list');
+      let span = document.createElement("SPAN");
+      let txt = document.createTextNode("\u00D7");
+      span.className = "close-todo";
+      span.appendChild(txt);
+      li.appendChild(span);
+    }
+  }
+  removeToDoList();
+}
+restoreTasks();
+
+function removeToDoListAll() {
+  let lengthToDoList = document.getElementById('myToDoList').getElementsByTagName('li');
+  for (let i = 0; i = lengthToDoList.length; i++) {
+    document.querySelector('.todo-list').remove();
+  }
 }

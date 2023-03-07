@@ -18,7 +18,7 @@
         <!-- <div class="audio-track">
           <div class="audio-time"></div>
         </div> -->
-        <input type="range" min="1" max="100" value="0" class="audio-track audio-progress"  id="audioTrackId">
+        <input type="range" min="1" max="100" value="0" class="audio-track audio-progress" id="audioTrackId">
         <div class="track-time">0:00</div>
         <span>/</span>
         <div class="duration-time">0:00</div>
@@ -88,13 +88,13 @@
               <div class="github">Github</div>
             </div>
           </div>
-          <div class="settings-line"></div>
+          <div class="settings-line settings-line-image"></div>
         </div>
         <form class="wrapper-checkbox wrapper-settings-content" id="wrapper-checkbox">
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="time-title settings-title">Time</div>
-              <input type="checkbox" class="check" id="check-time" checked="checked"/>
+              <input type="checkbox" class="check" id="check-time" checked="checked" />
               <label for="check-time"></label>
             </div>
             <div class="settings-line"></div>
@@ -102,7 +102,7 @@
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="data-title settings-title">Data</div>
-              <input type="checkbox" class="check" id="check-data" checked="checked"/>
+              <input type="checkbox" class="check" id="check-data" checked="checked" />
               <label for="check-data"></label>
             </div>
             <div class="settings-line"></div>
@@ -110,7 +110,7 @@
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="greeting-title settings-title">Greeting</div>
-              <input type="checkbox" class="check" id="check-greeting" checked="checked"/>
+              <input type="checkbox" class="check" id="check-greeting" checked="checked" />
               <label for="check-greeting"></label>
             </div>
             <div class="settings-line"></div>
@@ -118,7 +118,7 @@
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="quote-of-the-day-title settings-title">Quote of the day</div>
-              <input type="checkbox" class="check" id="check-quote" checked="checked"/>
+              <input type="checkbox" class="check" id="check-quote" checked="checked" />
               <label for="check-quote"></label>
             </div>
             <div class="settings-line"></div>
@@ -126,15 +126,15 @@
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="weather-widget-title settings-title">Weather widget</div>
-              <input type="checkbox" class="check" id="check-weather" checked="checked"/>
-              <label for="check-weather"></label> 
+              <input type="checkbox" class="check" id="check-weather" checked="checked" />
+              <label for="check-weather"></label>
             </div>
             <div class="settings-line"></div>
           </div>
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="audio-player-title settings-title">Audio player</div>
-              <input type="checkbox" class="check" id="check-audio-player" checked="checked"/>
+              <input type="checkbox" class="check" id="check-audio-player" checked="checked" />
               <label for="check-audio-player"></label>
             </div>
             <div class="settings-line"></div>
@@ -142,7 +142,7 @@
           <div class="wrapper-settings-content">
             <div class="wrapper-contains-check">
               <div class="to-do settings-title">ToDo</div>
-              <input type="checkbox" class="check" id="check-todo" checked="checked"/>
+              <input type="checkbox" class="check" id="check-todo" checked="checked" />
               <label for="check-todo"></label>
             </div>
             <div class="settings-line"></div>
@@ -158,10 +158,22 @@
         <div class="author"></div>
       </div>
     </div>
+    <div class="wrapper-todo-list" id="toDo">
+      <div class="todo-list-header">
+        <h2 class="todo-list-heading">To Do List</h2>
+        <input type="text" class="to-do-input" id="toDoInput" placeholder="Enter To Do...">
+        <span class="addToDoBtn" id="newElementToDo">Add</span>
+      </div>
+      <ul class="my-todo-list" id="myToDoList">
+        <li class="todo-list" id="toDoList">Your task</li>
+      </ul>
+    </div>
     <ul class="wrapper-logo">
       <li class="logo-data">2023</li>
-      <li class="logo-github"><a href="https://github.com/L1senochek" target="_blank"><img class="logo-github-img" src="assets/img/github.png" alt="github"></a></li>
-      <li class="logo-rs"><a href="https://rs.school/js-stage0/" target="_blank"><img class="logo-rsschool-img" src="assets/img/logo_rs.png" alt="RS"></a></li>
+      <li class="logo-github"><a href="https://github.com/L1senochek" target="_blank"><img class="logo-github-img"
+            src="assets/img/github.png" alt="github"></a></li>
+      <li class="logo-rs"><a href="https://rs.school/js-stage0/" target="_blank"><img class="logo-rsschool-img"
+            src="assets/img/logo_rs.png" alt="RS"></a></li>
     </ul>
   </footer>
   <script src="js/script.js" type="module"></script>
