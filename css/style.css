@@ -397,7 +397,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   display: flex;
   flex-direction: column;
   position: absolute;
-  padding-right: 1400px;
+  padding-right: 1200px;
   z-index: 21;
   padding-bottom: 20px;
 }
@@ -611,7 +611,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
   width: 100px;
   list-style: none;
   z-index: 25;
-  margin-left: 1700px;
+  margin-left: 1500px;
   padding-bottom: 20px;
 }
 
@@ -650,7 +650,7 @@ input[type=range].sound-volume.sound-volume-progress:active::-webkit-slider-runn
 
 .wrapper-todo-list {
   position: absolute;
-  margin-left: 1400px;
+  margin-left: 1200px;
   z-index: 21;
   opacity: 1;
   z-index: 24;
